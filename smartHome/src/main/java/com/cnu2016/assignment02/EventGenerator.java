@@ -1,17 +1,12 @@
 package com.cnu2016.assignment02;
 import java.util.*;
 import java.io.*;
-public class EventGenerator {
-    static final int TOTAL_APPLIANCES = 25; 
-    public static ArrayList<Event> readData(String filename) throws IOException {
+public class EventGenerator { 
+    public static ArrayList<Event> readData(String filename, ArrayList<Appliance> appliances) throws IOException {
+
+        boolean state[] = new boolean[appliances.size()];
+        int tim[] = new int[appliances.size()];
         
-        //need to hard code types. for now type 0 is a water heater
-        int type[] = new int[TOTAL_APPLIANCES];
-        type[0] = 1;
-        //hard coding ends
-        
-        boolean state[] = new boolean[TOTAL_APPLIANCES];
-        int tim[] = new int[TOTAL_APPLIANCES];
         ArrayList<Event> events = new ArrayList<Event>();
         Scanner in = new Scanner(new FileReader(filename));
         while(in.hasNext()) {
@@ -25,12 +20,12 @@ public class EventGenerator {
                 state[ID] = newState;
                 tim[ID] = startTime;
             }
-            events.add(new Event(startTime, ID));
+            events.add(new Event(startTime, appliances.get(ID)));
         }
         //Explicity shut off all water heaters which were left on 
-        for (int i = 0; i < TOTAL_APPLIANCES; ++i) {
-            if (type[i] == 1 && state[i] == true) {
-                events.add(new Event(tim[i] + 2, i));
+        for (int i = 0; i < appliances.size(); ++i) {
+            if (appliances.get(i).getType() == Appliance.Type.WATERHEATER && state[i] == true) {
+                events.add(new Event(tim[i] + 2, appliances.get(i)));
             }
         }
         Collections.sort(events, new Comparator<Event>() {

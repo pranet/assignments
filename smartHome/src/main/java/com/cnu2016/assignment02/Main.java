@@ -2,20 +2,29 @@ package com.cnu2016.assignment02;
 import java.io.*;
 import java.util.*;
 public class Main {
-    static final int TOTAL_APPLIANCES = 3;
     public static void main(String args[]) throws IOException {
-        boolean state[] = new boolean[TOTAL_APPLIANCES];
-        ArrayList<Event> events = EventGenerator.readData("/projects/assignments/smartHome/input.txt");
+        ArrayList<Appliance> appliances = new ArrayList<Appliance>();
+        appliances.add(new Appliance(Appliance.Type.WATERHEATER));
+        appliances.add(new Appliance(Appliance.Type.AIRCONDITIONER));
+        appliances.add(new Appliance(Appliance.Type.COOKINGOVEN));
+        appliances.add(new Appliance(Appliance.Type.WATERHEATER));
+        
+        ArrayList<Event> events = EventGenerator.readData("/projects/assignments/smartHome/input.txt", appliances);
         Timer timer = new Timer();
         events.forEach( e -> {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    state[e.ID] ^= true;
-                    System.out.printf("At time %d\n", e.timeStamp);
-                    for (int i = 0; i < TOTAL_APPLIANCES; ++i) {
-                        System.out.printf("%d %b\n", i, state[i]);
+                    if(e.appliance.getState() == true) {
+                        e.appliance.stop();
                     }
+                    else {
+                        e.appliance.start();
+                    }
+                    System.out.printf("At time %d\n", e.timeStamp);
+                    appliances.forEach( a -> {
+                        System.out.printf("%d %b\n", a.getID(), a.getState()); 
+                    });
                 }
             }, e.timeStamp * 1000);
         });
