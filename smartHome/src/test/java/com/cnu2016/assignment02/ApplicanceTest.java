@@ -8,7 +8,7 @@ public class ApplicanceTest {
         Appliance b = new Appliance(Appliance.Type.COOKINGOVEN);
         assertEquals(a.getID() + 1,b.getID());
         assertEquals(a.getType(), Appliance.Type.WATERHEATER);
-        assertEquals(a.getType(), Appliance.Type.COOKINGOVEN);
+        assertEquals(b.getType(), Appliance.Type.COOKINGOVEN);
         assertEquals(a.getState(), false);
         a.start();
         assertEquals(a.getState(), true);

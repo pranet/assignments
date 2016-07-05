@@ -2,7 +2,7 @@ package com.cnu2016.assignment02;
 import java.util.*;
 import java.io.*;
 public class EventGenerator { 
-    public static ArrayList<Event> readData(String filename, ArrayList<Appliance> appliances) throws IOException {
+    public static ArrayList<Event> readData(String filename, ArrayList<Appliance> appliances) throws IOException, BadScheduleException {
 
         boolean state[] = new boolean[appliances.size()];
         int tim[] = new int[appliances.size()];
@@ -14,7 +14,8 @@ public class EventGenerator {
             int startTime = in.nextInt();
             boolean newState = in.nextBoolean();
             if (state[ID] == newState) {
-                //throw an exception here
+                in.close();
+                throw new BadScheduleException("Please enter a valid schedule");
             }
             else {
                 state[ID] = newState;
