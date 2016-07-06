@@ -15,7 +15,7 @@ public class EventGeneratorTest {
         assertEquals(ret.get(1).timeStamp, 4);
     }
     @Test
-    public void testBadSchedule() throws IOException {
+    public void testBadSchedule() throws IOException, BadScheduleException {
         ArrayList<Appliance> appliances = new ArrayList<Appliance>();
         appliances.add(new Appliance(Appliance.Type.WATERHEATER));
         String filename = "/projects/assignments/smartHome/src/test/java/testData/testBadScheduleException.txt";
@@ -29,7 +29,7 @@ public class EventGeneratorTest {
         }
     }
     @Test
-    public void testGoodSchedule() throws IOException {
+    public void testGoodSchedule() throws IOException, BadScheduleException {
         ArrayList<Appliance> appliances = new ArrayList<Appliance>();
         appliances.add(new Appliance(Appliance.Type.WATERHEATER));
         appliances.add(new Appliance(Appliance.Type.COOKINGOVEN));
@@ -41,6 +41,5 @@ public class EventGeneratorTest {
         catch (Exception e) {
             assertEquals(true, false);
         }
-    }
-    
+    }    
 }
