@@ -1,0 +1,6 @@
+0 2 true
+0 3 false
+0 5 true
+1 7 true
+2 9 true
+0 10 false
