@@ -18,16 +18,17 @@ public class Appliance {
     public boolean getState() {
         return state;
     } 
-    public void start() {
-        state = true;
-    }
-    public void stop() {
-        state = false;
+    public void toggle() {
+        state ^= true;
     }
     public int getID() {
         return ID;
     }
     public Type getType() {
         return type;
+    }
+    @Override
+    public String toString() {
+        return ID + " " + state;
     }
 }

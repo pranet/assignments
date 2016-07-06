@@ -10,26 +10,25 @@ public class Main {
         appliances.add(new Appliance(Appliance.Type.WATERHEATER));
         return appliances;
     }
-    public static void main(String args[]) throws IOException, BadScheduleException {
-        ArrayList<Appliance> appliances = populate();
-        ArrayList<Event> events = EventGenerator.readData("/projects/assignments/smartHome/input.txt", appliances);
+    public static void scheduleAndRun(ArrayList<Event> events, ArrayList<Appliance> appliances) {
         Timer timer = new Timer();
         events.forEach( e -> {
             timer.schedule(new TimerTask() {
                 @Override
                 public void run() {
-                    if(e.appliance.getState() == true) {
-                        e.appliance.stop();
-                    }
-                    else {
-                        e.appliance.start();
-                    }
+                    e.appliance.toggle();
                     System.out.printf("At time %d\n", e.timeStamp);
                     appliances.forEach( a -> {
-                        System.out.printf("%d %b\n", a.getID(), a.getState()); 
+                        System.out.println(a);
                     });
                 }
             }, e.timeStamp * 1000);
-        });
+        });    
+    }
+    public static void main(String args[]) throws InterruptedException, IOException, BadScheduleException {
+        ArrayList<Appliance> appliances = populate();
+        ArrayList<Event> events = EventGenerator.readData("/projects/assignments/smartHome/input.txt", appliances);
+        scheduleAndRun(events, appliances);
+        Thread.sleep(10 * 1000);
     }
 }

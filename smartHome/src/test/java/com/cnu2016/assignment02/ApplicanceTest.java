@@ -10,9 +10,12 @@ public class ApplicanceTest {
         assertEquals(a.getType(), Appliance.Type.WATERHEATER);
         assertEquals(b.getType(), Appliance.Type.COOKINGOVEN);
         assertEquals(a.getState(), false);
-        a.start();
+        a.toggle();
         assertEquals(a.getState(), true);
-        a.stop();
+        a.toggle();
         assertEquals(a.getState(), false);
+        boolean check = a.toString().contains("false");
+        assertEquals(check, true);
     }
+    
 }
