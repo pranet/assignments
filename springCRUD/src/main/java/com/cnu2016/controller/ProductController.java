@@ -60,6 +60,12 @@ public class ProductController {
         if (product == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
+        if (p.getCode() == null) {
+            p.setCode(product.getProductCode());
+        }
+        if (p.getDescription() == null) {
+            p.setDescription(product.getProductDescription());
+        }
         product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
         return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
