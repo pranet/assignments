@@ -50,7 +50,7 @@ public class ProductController {
         if (productRepository.findOne(id) == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
-        productRepository.save(new Product(id, p.getCode(), p.getDescription()));
+        product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
         return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
@@ -60,7 +60,7 @@ public class ProductController {
         if (product == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
-        productRepository.save(new Product(id, p.getCode(), p.getDescription()));
+        product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
         return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
