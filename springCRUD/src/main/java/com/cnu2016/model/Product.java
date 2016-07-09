@@ -26,6 +26,7 @@ public class Product {
         this.productID = productID;
         this.productCode = productCode;
         this.productDescription = productDescription;
+        this.isAvailable = true;
     }
 
     public Product(String productName, String productCode, String productDescription, int quantityInStock, int buyPrice, int sellPrice, Boolean isAvailable, int ID) {
