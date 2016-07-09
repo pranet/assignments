@@ -39,8 +39,9 @@ public class ProductController {
     /* id is ignored in POST, hence dummy value */
     @RequestMapping(value = "/api/products", method = RequestMethod.POST)
     public ResponseEntity<?> postProduct(@RequestBody ProductSerializer p) {
-        productRepository.save(new Product(-1, p.getCode(), p.getDescription()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product added");
+        Product product = new Product(-1, p.getCode(), p.getDescription());
+        productRepository.save(product);
+        return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.PUT)
@@ -50,7 +51,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
         productRepository.save(new Product(id, p.getCode(), p.getDescription()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product updated");
+        return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.PATCH)
@@ -60,7 +61,7 @@ public class ProductController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
         productRepository.save(new Product(id, p.getCode(), p.getDescription()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product patched");
+        return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.DELETE)
