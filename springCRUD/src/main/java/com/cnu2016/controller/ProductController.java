@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * Created by pranet on 08/07/16.
@@ -21,7 +22,7 @@ public class ProductController {
     public ResponseEntity<?> getAllProducts() {
         List ret = new ArrayList<ProductSerializer>();
         for (Product p : productRepository.findAll()) {
-            if (p.getAvailable() != FALSE) {
+            if (p.getAvailable() == TRUE) {
                 ret.add(new ProductSerializer(p));
             }
         }
@@ -40,8 +41,7 @@ public class ProductController {
     @RequestMapping(value = "/api/products", method = RequestMethod.POST)
     public ResponseEntity<?> postProduct(@RequestBody ProductSerializer p) {
         Product product = new Product(-1, p.getCode(), p.getDescription());
-        productRepository.save(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductSerializer(product));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductSerializer(productRepository.save(product);));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.PUT)
