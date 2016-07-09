@@ -41,7 +41,7 @@ public class ProductController {
     @RequestMapping(value = "/api/products", method = RequestMethod.POST)
     public ResponseEntity<?> postProduct(@RequestBody ProductSerializer p) {
         Product product = new Product(-1, p.getCode(), p.getDescription());
-        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductSerializer(productRepository.save(product);));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductSerializer(productRepository.save(product)));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.PUT)
