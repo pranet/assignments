@@ -21,16 +21,16 @@ public class Application {
         SpringApplication.run(Application.class);
     }
 
-    @Bean
-    public CommandLineRunner demo(ProductRepository repository) {
-        return (args) -> {
-            // fetch all customers
-            log.info("Customers found with findAll():");
-            log.info("-------------------------------");
-            for (Product p : repository.findAll()) {
-                log.info(p.toString());
-            }
-            log.info("");
-        };
-    }
+//    @Bean
+//    public CommandLineRunner demo(ProductRepository repository) {
+//        return (args) -> {
+//            // fetch all customers
+//            log.info("Customers found with findAll():");
+//            log.info("-------------------------------");
+//            for (Product p : repository.findAll()) {
+//                log.info(p.toString());
+//            }
+//            log.info("");
+//        };
+//    }
 }
