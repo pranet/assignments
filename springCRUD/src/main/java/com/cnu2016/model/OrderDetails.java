@@ -1,9 +1,6 @@
 package com.cnu2016.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 /**
  * Created by pranet on 09/07/16.
@@ -14,7 +11,9 @@ public class OrderDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int orderDetailsID;
-    private int orderID;
+    @ManyToOne
+    @JoinColumn(name = "orderID")
+    private Orders orders;
     private int quantity;
     private int productID;
     private int sellPrice;
@@ -28,13 +27,9 @@ public class OrderDetails {
         this.orderDetailsID = orderDetailsID;
     }
 
-    public int getOrderID() {
-        return orderID;
-    }
+    public Orders getObject() { return orders;}
 
-    public void setOrderID(int orderID) {
-        this.orderID = orderID;
-    }
+    public void setObject(Orders object) { this.orders = object;}
 
     public int getQuantity() {
         return quantity;

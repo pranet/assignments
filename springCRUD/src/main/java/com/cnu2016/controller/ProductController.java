@@ -1,11 +1,16 @@
 package com.cnu2016.controller;
 import java.util.*;
+
+import com.cnu2016.AWSSQSUtility;
 import com.cnu2016.model.Product;
 import com.cnu2016.model.ProductSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import sun.net.httpserver.HttpServerImpl;
+
+import javax.servlet.http.HttpServletRequest;
 
 import static java.lang.Boolean.FALSE;
 import static java.lang.Boolean.TRUE;
@@ -19,13 +24,14 @@ public class ProductController {
     ProductRepository productRepository;
 
     @RequestMapping(value = "/api/products", method = RequestMethod.GET)
-    public ResponseEntity<?> getAllProducts() {
+    public ResponseEntity<?> getAllProducts(HttpServletRequest request) {
         List ret = new ArrayList<ProductSerializer>();
         for (Product p : productRepository.findAll()) {
             if (p.getAvailable() == TRUE) {
                 ret.add(new ProductSerializer(p));
             }
         }
+        AWSSQSUtility.getInstance().sendMessageToQueue("Hello World");
         return ResponseEntity.ok(ret);
     }
 
@@ -35,6 +41,7 @@ public class ProductController {
         if (product == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
+        AWSSQSUtility.getInstance().sendMessageToQueue("Hello World");
         return ResponseEntity.ok(new ProductSerializer(product));
     }
     /* id is ignored in POST, hence dummy value */
