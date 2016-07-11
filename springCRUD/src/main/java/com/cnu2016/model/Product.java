@@ -21,7 +21,6 @@ public class Product {
     private int buyPrice;
     private int sellPrice;
     private Boolean isAvailable;
-
     public Product(int productID, String productCode, String productDescription) {
         this.productID = productID;
         this.productCode = productCode;
