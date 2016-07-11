@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import static java.lang.Boolean.FALSE;
+import static java.lang.Boolean.TRUE;
 
 /**
  * Created by pranet on 08/07/16.
@@ -21,7 +22,7 @@ public class ProductController {
     public ResponseEntity<?> getAllProducts() {
         List ret = new ArrayList<ProductSerializer>();
         for (Product p : productRepository.findAll()) {
-            if (p.getAvailable() != FALSE) {
+            if (p.getAvailable() == TRUE) {
                 ret.add(new ProductSerializer(p));
             }
         }
@@ -39,8 +40,8 @@ public class ProductController {
     /* id is ignored in POST, hence dummy value */
     @RequestMapping(value = "/api/products", method = RequestMethod.POST)
     public ResponseEntity<?> postProduct(@RequestBody ProductSerializer p) {
-        productRepository.save(new Product(-1, p.getCode(), p.getDescription()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product added");
+        Product product = new Product(-1, p.getCode(), p.getDescription());
+        return ResponseEntity.status(HttpStatus.CREATED).body(new ProductSerializer(productRepository.save(product)));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.PUT)
@@ -49,8 +50,8 @@ public class ProductController {
         if (productRepository.findOne(id) == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
-        productRepository.save(new Product(id, p.getCode(), p.getDescription()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product updated");
+        product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
+        return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.PATCH)
@@ -59,8 +60,14 @@ public class ProductController {
         if (product == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
-        productRepository.save(new Product(id, p.getCode(), p.getDescription()));
-        return ResponseEntity.status(HttpStatus.OK).body("Product patched");
+        if (p.getCode() == null) {
+            p.setCode(product.getProductCode());
+        }
+        if (p.getDescription() == null) {
+            p.setDescription(product.getProductDescription());
+        }
+        product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
+        return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
     @RequestMapping(value = "/api/products/{id}", method = RequestMethod.DELETE)
