@@ -1,0 +1,3 @@
+springCRUD/target/**
+springCRUD/.idea
+src/main/resources/application.properties
