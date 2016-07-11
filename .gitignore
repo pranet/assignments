@@ -1,3 +1,7 @@
 springCRUD/target/**
 springCRUD/.idea
 src/main/resources/application.properties
+redShift/bin/**
+redShift/lib/**
+redShift/include/**
+redShift/pip-selfcheck.json

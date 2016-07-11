@@ -61,13 +61,13 @@ public class ProductController {
         if (product == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
-        if (p.getCode() == null) {
-            p.setCode(product.getProductCode());
+        if (p.getCode() != null) {
+            product.setProductCode(p.getCode());
         }
-        if (p.getDescription() == null) {
-            p.setDescription(product.getProductDescription());
+        if (p.getDescription() != null) {
+            product.setProductDescription(p.getDescription());
         }
-        product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
+        product = productRepository.save(product);
         return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
