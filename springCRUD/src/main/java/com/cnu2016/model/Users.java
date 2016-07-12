@@ -1,9 +1,7 @@
 package com.cnu2016.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by pranet on 11/07/16.
@@ -12,12 +10,14 @@ import javax.persistence.Id;
 public class Users {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int userID;
+    private Integer userID;
 
     private String customerName;
     private String contactFirstName;
     private String contactLastName;
     private String phone;
+//    @OneToMany(mappedBy = "user")
+//    private Set<Orders> orders;
 
     public Users(int userID, String customerName, String contactFirstName, String contactLastName, String phone) {
         this.userID = userID;
@@ -29,11 +29,11 @@ public class Users {
     public Users() {
 
     }
-    public int getUserID() {
+    public Integer getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(Integer userID) {
         this.userID = userID;
     }
 

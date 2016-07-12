@@ -10,56 +10,74 @@ public class OrderDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int orderDetailsID;
+    private Integer orderDetailsID;
     @ManyToOne
     @JoinColumn(name = "orderID")
     private Orders orders;
-    private int quantity;
-    private int productID;
-    private int sellPrice;
-    private int buyPrice;
+    @ManyToOne
+    @JoinColumn(name = "productID")
+    private Product product;
+    private Integer quantity;
+    private Integer sellPrice;
+    private Integer buyPrice;
 
-    public int getOrderDetailsID() {
+    public OrderDetails(Orders orders, Product product, Integer quantity, Integer sellPrice, Integer buyPrice) {
+        this.orders = orders;
+        this.product = product;
+        this.quantity = quantity;
+        this.sellPrice = sellPrice;
+        this.buyPrice = buyPrice;
+    }
+
+    public OrderDetails() {
+
+    }
+
+    public Integer getOrderDetailsID() {
         return orderDetailsID;
     }
 
-    public void setOrderDetailsID(int orderDetailsID) {
+    public void setOrderDetailsID(Integer orderDetailsID) {
         this.orderDetailsID = orderDetailsID;
     }
 
-    public Orders getObject() { return orders;}
+    public Orders getOrders() {
+        return orders;
+    }
 
-    public void setObject(Orders object) { this.orders = object;}
+    public void setOrders(Orders orders) {
+        this.orders = orders;
+    }
 
-    public int getQuantity() {
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
+
+    public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public void setQuantity(Integer quantity) {
         this.quantity = quantity;
     }
 
-    public int getProductID() {
-        return productID;
-    }
-
-    public void setProductID(int productID) {
-        this.productID = productID;
-    }
-
-    public int getSellPrice() {
+    public Integer getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(int sellPrice) {
+    public void setSellPrice(Integer sellPrice) {
         this.sellPrice = sellPrice;
     }
 
-    public int getBuyPrice() {
+    public Integer getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(int buyPrice) {
+    public void setBuyPrice(Integer buyPrice) {
         this.buyPrice = buyPrice;
     }
 }

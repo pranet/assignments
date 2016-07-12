@@ -1,6 +1,5 @@
 package com.cnu2016.model;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.*;
@@ -12,42 +11,40 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
 
-    private int orderID;
+    private Integer orderID;
     private String status;
     private Date orderDate;
 
-    @OneToMany(mappedBy = "orders")
-    private Set<OrderDetails> orderDetails;
+//    @OneToMany(mappedBy = "orders")
+//    private Set<OrderDetails> orderDetails;
 
     @ManyToOne
     @JoinColumn(name = "userID", referencedColumnName = "userID")
     private Users user;
 
-    public Orders(int orderID, String status, Date orderDate, Set<OrderDetails> orderDetails, Users user) {
+    public Orders(int orderID, String status, Date orderDate, /*Set<OrderDetails> orderDetails,*/ Users user) {
         this.orderID = orderID;
         this.status = status;
         this.orderDate = orderDate;
-        this.orderDetails = orderDetails;
+//        this.orderDetails = orderDetails;
         this.user = user;
     }
     public Orders() {
 
     }
-    public int getOrderID() {
+    public Integer getOrderID() {
         return orderID;
     }
 
-    public void setOrderID(int orderID) {
+    public void setOrderID(Integer orderID) {
         this.orderID = orderID;
-    }
-
-    public String isStatus() {
-        return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public String getStatus() { return status; }
 
     public Date getOrderDate() {
         return orderDate;
@@ -57,13 +54,13 @@ public class Orders {
         this.orderDate = orderDate;
     }
 
-    public Set<OrderDetails> getOrderDetails() {
-        return orderDetails;
-    }
+//    public Set<OrderDetails> getOrderDetails() {
+//        return orderDetails;
+//    }
 
-    public void setOrderDetails(Set<OrderDetails> orderDetails) {
-        this.orderDetails = orderDetails;
-    }
+//    public void setOrderDetails(Set<OrderDetails> orderDetails) {
+//        this.orderDetails = orderDetails;
+//    }
 
     public Users getUser() {
         return user;

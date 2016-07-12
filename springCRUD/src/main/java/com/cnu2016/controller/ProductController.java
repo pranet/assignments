@@ -17,7 +17,7 @@ import static java.lang.Boolean.TRUE;
 @RestController
 public class ProductController {
     @Autowired
-    ProductRepository productRepository;
+    public ProductRepository productRepository;
 
     @RequestMapping(value = "/api/products", method = RequestMethod.GET)
     public ResponseEntity<?> getAllProducts() {

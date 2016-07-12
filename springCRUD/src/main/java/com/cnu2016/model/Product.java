@@ -1,8 +1,5 @@
 package com.cnu2016.model;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 
-import javax.annotation.Generated;
 import javax.persistence.*;
 
 /**
@@ -13,13 +10,13 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int productID;
+    private Integer productID;
     private String productName;
     private String productCode;
     private String productDescription;
-    private int quantityInStock;
-    private int buyPrice;
-    private int sellPrice;
+    private Integer quantityInStock;
+    private Integer buyPrice;
+    private Integer sellPrice;
     private Boolean isAvailable;
     public Product(int productID, String productCode, String productDescription) {
         this.productID = productID;
@@ -52,11 +49,11 @@ public class Product {
 //                '}';
 //    }
 
-    public int getProductID() {
+    public Integer getProductID() {
         return productID;
     }
 
-    public void setProductID(int productID) {
+    public void setProductID(Integer productID) {
         this.productID = productID;
     }
 
@@ -84,27 +81,27 @@ public class Product {
         this.productDescription = productDescription;
     }
 
-    public int getQuantityInStock() {
+    public Integer getQuantityInStock() {
         return quantityInStock;
     }
 
-    public void setQuantityInStock(int quantityInStock) {
+    public void setQuantityInStock(Integer quantityInStock) {
         this.quantityInStock = quantityInStock;
     }
 
-    public int getBuyPrice() {
+    public Integer getBuyPrice() {
         return buyPrice;
     }
 
-    public void setBuyPrice(int buyPrice) {
+    public void setBuyPrice(Integer buyPrice) {
         this.buyPrice = buyPrice;
     }
 
-    public int getSellPrice() {
+    public Integer getSellPrice() {
         return sellPrice;
     }
 
-    public void setSellPrice(int sellPrice) {
+    public void setSellPrice(Integer sellPrice) {
         this.sellPrice = sellPrice;
     }
 

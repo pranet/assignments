@@ -4,7 +4,7 @@ package com.cnu2016.model;
  * Created by pranet on 08/07/16.
  */
 public class ProductSerializer {
-    private int id;
+    private Integer id;
     private String code;
     private String description;
 
@@ -39,11 +39,11 @@ public class ProductSerializer {
         this.code = code;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 }
