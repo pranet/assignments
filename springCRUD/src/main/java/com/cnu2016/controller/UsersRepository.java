@@ -7,4 +7,5 @@ import org.springframework.data.repository.CrudRepository;
  * Created by pranet on 12/07/16.
  */
 public interface UsersRepository extends CrudRepository<Users, Integer> {
+    Users findDistinctUsersByCustomerName(String customerName);
 }
