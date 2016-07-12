@@ -1,9 +1,7 @@
 package com.cnu2016.controller;
 
 import com.cnu2016.model.*;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.SystemEnvironmentPropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -56,22 +54,22 @@ public class OrdersController {
         if (order == null || order.getStatus().equals("Deleted") == true) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid order id");
         }
-        if (orderDetailsSerializer == null || orderDetailsSerializer.getQuantity() == null || orderDetailsSerializer.getProductID() == null) {
+        if (orderDetailsSerializer == null || orderDetailsSerializer.getQty() == null || orderDetailsSerializer.getProduct_id() == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid data");
         }
-        Product product = productRepository.findOne(orderDetailsSerializer.getProductID());
+        Product product = productRepository.findOne(orderDetailsSerializer.getProduct_id());
         if (order == null || product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid data");
         }
-        if (order.getStatus().equals("In Cart") == false || product.getQuantityInStock() < orderDetailsSerializer.getQuantity()) {
+        if (order.getStatus().equals("In Cart") == false || product.getQuantityInStock() < orderDetailsSerializer.getQty()) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Closed order or insufficient stock");
         }
         OrderDetails orderDetails = new OrderDetails(
-            order, product, orderDetailsSerializer.getQuantity(), product.getSellPrice(), product.getBuyPrice()
+            order, product, orderDetailsSerializer.getQty(), product.getSellPrice(), product.getBuyPrice()
         );
         orderDetails = orderDetailsRepository.save(orderDetails);
         // adjust inventory
-        product.setQuantityInStock(product.getQuantityInStock() - orderDetailsSerializer.getQuantity());
+        product.setQuantityInStock(product.getQuantityInStock() - orderDetailsSerializer.getQty());
         productRepository.save(product);
 
         return ResponseEntity.status(HttpStatus.OK).body(orderDetails);
