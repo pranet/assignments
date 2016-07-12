@@ -7,3 +7,9 @@ redShift/include/**
 redShift/pip-selfcheck.json
 redShift/.idea/**
 redShift/.Python
+flaskAssignment/.idea
+flaskAssignment/.Python
+flaskAssignment/bin
+flaskAssignment/lib
+flaskAssignment/include
+flaskAssignment/pip-selfcheck.json
