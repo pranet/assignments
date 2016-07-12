@@ -13,13 +13,41 @@ public class LogData {
     private String url;
     private String parametersString;
     private int id;
-
-    public LogData(DateTime timeStamp, String ipAddress, String url, String parametersString, int id) {
+    private Integer responseCode;
+    private String requestType;
+    private Long requestTime;
+    public LogData(DateTime timeStamp, String ipAddress, String url, String parametersString, Integer responseCode, String requestType, Long requestTime) {
         this.timeStamp = timeStamp;
         this.ipAddress = ipAddress;
         this.url = url;
         this.parametersString = parametersString;
-        this.id = id;
+        this.responseCode = responseCode;
+        this.requestTime = requestTime;
+        this.requestType = requestType;
+    }
+
+    public Integer getResponseCode() {
+        return responseCode;
+    }
+
+    public void setResponseCode(Integer responseCode) {
+        this.responseCode = responseCode;
+    }
+
+    public String getRequestType() {
+        return requestType;
+    }
+
+    public void setRequestType(String requestType) {
+        this.requestType = requestType;
+    }
+
+    public Long getRequestTime() {
+        return requestTime;
+    }
+
+    public void setRequestTime(Long requestTime) {
+        this.requestTime = requestTime;
     }
 
     public DateTime getTimeStamp() {

@@ -62,12 +62,25 @@ public class OrdersController {
             order, product, orderDetailsSerializer.getQuantity(), product.getSellPrice(), product.getBuyPrice()
         );
         orderDetails = orderDetailsRepository.save(orderDetails);
+        // adjust inventory
+        product.setQuantityInStock(product.getQuantityInStock() - orderDetailsSerializer.getQuantity());
+        productRepository.save(product);
+
         return ResponseEntity.status(HttpStatus.OK).body(orderDetails);
     }
 
-//    /**
-//     * Checkout method
-//     */
-//    @RequestMapping(value = "/api/orders/{id}", method = RequestMethod.PATCH)
-//    public ResponseEntity<?> checkoutOrder()
+    /**
+     * Checkout method
+     */
+//    @RequestMapping(value = "/api/orders/{orderID}", method = RequestMethod.PATCH)
+//    public ResponseEntity<?> checkoutOrder(@PathVariable Integer orderID) {
+//
+//        Orders order = ordersRepository.findOne(orderID);
+//        if (order == null) {
+//            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid order id");
+//        }
+//        if (order.getStatus().equals("In Cart") == false) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Closed order");
+//        }
+//    }
 }
