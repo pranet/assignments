@@ -10,7 +10,6 @@ import java.util.*;
 public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-
     private Integer orderID;
     private String status;
     private Date orderDate;

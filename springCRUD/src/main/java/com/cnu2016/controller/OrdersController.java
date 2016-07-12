@@ -27,18 +27,12 @@ public class OrdersController {
       * Status : "In Cart"
       * CANCELLED : UserID : will be extracted from Users object. Current support is only for ID
       */
-    @RequestMapping(value = "/api/order", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/orders", method = RequestMethod.POST)
     public ResponseEntity<?> postNewOrder(/*@RequestBody Users user*/) {
         Orders orders = new Orders();
-//        if (user != null && user.getUserID() != null) {
-//            user = usersRepository.findOne(user.getUserID());
-//            if (user == null) {
-//                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("No such user");
-//            }
-//            orders.setUser(user);
-//        }
         orders.setStatus("In Cart");
-        return ResponseEntity.status(HttpStatus.OK).body(ordersRepository.save(orders));
+        orders = ordersRepository.save(orders);
+        return ResponseEntity.status(HttpStatus.CREATED).body(new OrderSerializer(orders.getOrderID()));
     }
 
     /**
@@ -48,7 +42,7 @@ public class OrdersController {
      * Will check if enough quantity is available
      * TODO : Will adjust inventory only during checkout
      */
-    @RequestMapping(value = "/api/order/{orderID}/orderLineItem", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/orders/{orderID}/orderLineItem", method = RequestMethod.POST)
     public ResponseEntity<?> addToOrder(@RequestBody OrderDetailsSerializer orderDetailsSerializer, @PathVariable Integer orderID) {
         Orders order = ordersRepository.findOne(orderID);
         if (order == null || order.getStatus().equals("Deleted") == true) {
@@ -61,7 +55,7 @@ public class OrdersController {
         if (order == null || product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid data");
         }
-        if (order.getStatus().equals("In Cart") == false || product.getQuantityInStock() < orderDetailsSerializer.getQty()) {
+        if (order.getStatus().equals("In Cart") == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Closed order or insufficient stock");
         }
         OrderDetails orderDetails = new OrderDetails(
@@ -69,8 +63,8 @@ public class OrdersController {
         );
         orderDetails = orderDetailsRepository.save(orderDetails);
         // adjust inventory
-        product.setQuantityInStock(product.getQuantityInStock() - orderDetailsSerializer.getQty());
-        productRepository.save(product);
+//        product.setQuantityInStock(product.getQuantityInStock() - orderDetailsSerializer.getQty());
+//        productRepository.save(product);
 
         return ResponseEntity.status(HttpStatus.OK).body(orderDetails);
     }
@@ -79,7 +73,7 @@ public class OrdersController {
      * Checkout method
      * TODO : Will adjust inventory here, instead of during adding products
      */
-    @RequestMapping(value = "/api/order/{orderID}", method = RequestMethod.PATCH)
+    @RequestMapping(value = "/api/orders/{orderID}", method = RequestMethod.PATCH)
     public ResponseEntity<?> checkoutOrder(@PathVariable Integer orderID, @RequestBody UserSerializer userSerializer) {
         Orders order = ordersRepository.findOne(orderID);
         if (order == null || order.getStatus().equals("Deleted") == true) {
@@ -102,7 +96,7 @@ public class OrdersController {
         return ResponseEntity.status(HttpStatus.OK).body(order);
     }
 
-    @RequestMapping(value = "/api/order/{orderID}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "/api/orders/{orderID}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteOrder (@PathVariable Integer orderID) {
         Orders order = ordersRepository.findOne(orderID);
         if (order == null || order.getStatus().equals("Deleted") == true) {
