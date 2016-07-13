@@ -7,6 +7,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by pranet on 11/07/16.
@@ -21,26 +23,26 @@ public class OrdersController {
     public ProductRepository productRepository;
     @Autowired
     UsersRepository usersRepository;
-     /**
-      * Creates a new order and returns it as response.
-      * Date will be decided when order is submitted.
-      * Status : "In Cart"
-      * CANCELLED : UserID : will be extracted from Users object. Current support is only for ID
-      */
+    /**
+     * Creates a new order and returns it as response.
+     * Response: {id:}
+     * Will set status to "In Cart"
+     */
     @RequestMapping(value = "/api/orders", method = RequestMethod.POST)
-    public ResponseEntity<?> postNewOrder(/*@RequestBody Users user*/) {
+    public ResponseEntity<?> postNewOrder() {
         Orders orders = new Orders();
         orders.setStatus("In Cart");
         orders = ordersRepository.save(orders);
         return ResponseEntity.status(HttpStatus.CREATED).body(new OrderSerializer(orders.getOrderID()));
     }
-
     /**
      * Adds to an existing order.
-     * Will return 404 if productID or quantity is missing.
+     * Will return NOT_FOUND if any of the following is true
+     *      1) Order is missing
+     *      2) ProductID is missing
+     *      3) Quantity is missing
+     * Will return BAD_REQUEST if status is not "In Cart"
      * Will fetch price from product table
-     * Will check if enough quantity is available
-     * TODO : Will adjust inventory only during checkout
      */
     @RequestMapping(value = "/api/orders/{orderID}/orderLineItem", method = RequestMethod.POST)
     public ResponseEntity<?> addToOrder(@RequestBody OrderDetailsSerializer orderDetailsSerializer, @PathVariable Integer orderID) {
@@ -70,8 +72,15 @@ public class OrdersController {
     }
 
     /**
-     * Checkout method
-     * TODO : Will adjust inventory here, instead of during adding products
+     * Request: {user_name, address}
+     * Will return NOT_FOUND if order corresponding to orderID does not exist
+     * Will return BAD_REQUEST if
+     *      1) Order status is not "In Cart"
+     *      2) user_name is null
+     *      3) user_name does not exist in Users table
+     * Will set status to "Checkout"
+     * Will set date
+     * Will set user
      */
     @RequestMapping(value = "/api/orders/{orderID}", method = RequestMethod.PATCH)
     public ResponseEntity<?> checkoutOrder(@PathVariable Integer orderID, @RequestBody UserSerializer userSerializer) {
@@ -96,6 +105,11 @@ public class OrdersController {
         return ResponseEntity.status(HttpStatus.OK).body(order);
     }
 
+    /**
+     * Will delete an existing order from the DB.
+     * Will return NOT_FOUND if order does not exist.
+     * Will set status to "Deleted"
+     */
     @RequestMapping(value = "/api/orders/{orderID}", method = RequestMethod.DELETE)
     public ResponseEntity<?> deleteOrder (@PathVariable Integer orderID) {
         Orders order = ordersRepository.findOne(orderID);
