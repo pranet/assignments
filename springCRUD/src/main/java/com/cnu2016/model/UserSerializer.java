@@ -4,12 +4,15 @@ package com.cnu2016.model;
  * Created by pranet on 13/07/16.
  */
 public class UserSerializer {
-    public String user_name;
-    public String address;
+    private String user_name;
+    private String address;
 
-    public UserSerializer(String user_name, String address) {
+    private String status;
+
+    public UserSerializer(String user_name, String address, String status) {
         this.user_name = user_name;
         this.address = address;
+        this.status = status;
     }
     public UserSerializer() {
 
@@ -29,5 +32,13 @@ public class UserSerializer {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

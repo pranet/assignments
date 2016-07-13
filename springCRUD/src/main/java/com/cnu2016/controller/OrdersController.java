@@ -2,12 +2,14 @@ package com.cnu2016.controller;
 
 import com.cnu2016.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -51,7 +53,7 @@ public class OrdersController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid order id");
         }
         if (orderDetailsSerializer == null || orderDetailsSerializer.getQty() == null || orderDetailsSerializer.getProduct_id() == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid data");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid data");
         }
         Product product = productRepository.findOne(orderDetailsSerializer.getProduct_id());
         if (order == null || product == null) {
@@ -60,14 +62,22 @@ public class OrdersController {
         if (order.getStatus().equals("In Cart") == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Closed order or insufficient stock");
         }
+
+        //quick fix: must make it much faster
+        Integer productID = orderDetailsSerializer.getProduct_id();
+        for(OrderDetails od : orderDetailsRepository.findAll()) {
+            if (od.getOrders().getOrderID().equals(orderID) && od.getProduct().getProductID().equals(productID)) {
+                od.setQuantity(od.getQuantity() + orderDetailsSerializer.getQty());
+                orderDetailsRepository.save(od);
+                return ResponseEntity.status(HttpStatus.OK).body(od);
+            }
+        }
+        //end of quick fix
+
         OrderDetails orderDetails = new OrderDetails(
             order, product, orderDetailsSerializer.getQty(), product.getSellPrice(), product.getBuyPrice()
         );
         orderDetails = orderDetailsRepository.save(orderDetails);
-        // adjust inventory
-//        product.setQuantityInStock(product.getQuantityInStock() - orderDetailsSerializer.getQty());
-//        productRepository.save(product);
-
         return ResponseEntity.status(HttpStatus.OK).body(orderDetails);
     }
 
@@ -91,16 +101,32 @@ public class OrdersController {
         if (order.getStatus().equals("In Cart") == false) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Closed order");
         }
-        if (userSerializer == null || userSerializer.user_name == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not specified");
+        if (userSerializer == null || userSerializer.getUser_name() == null || userSerializer.getStatus() == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User/status not specified");
         }
-        Users user = usersRepository.findDistinctUsersByCustomerName(userSerializer.user_name);
-        if (user == null) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not specified");
+        Users user = usersRepository.findDistinctUsersByCustomerName(userSerializer.getUser_name());
+        //quick fix
+//        if (user == null) {
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User not specified");
+//        }
+        for (OrderDetails od : orderDetailsRepository.findAll()) {
+            if (od.getOrders().getOrderID().equals(orderID) && od.getProduct().getQuantityInStock() < od.getQuantity()) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Insufficient stock");
+            }
         }
+
+        for (OrderDetails od : orderDetailsRepository.findAll()) {
+            if (od.getOrders().getOrderID().equals(orderID)) {
+                Product p = od.getProduct();
+                p.setQuantityInStock(p.getQuantityInStock() - od.getQuantity());
+                productRepository.save(p);
+            }
+        }
+
         order.setUser(user);
-        order.setStatus("Checkout");
+        order.setStatus(userSerializer.getStatus());
         order.setOrderDate(new Date());
+
         ordersRepository.save(order);
         return ResponseEntity.status(HttpStatus.OK).body(order);
     }
@@ -119,5 +145,13 @@ public class OrdersController {
         order.setStatus("Deleted");
         order = ordersRepository.save(order);
         return ResponseEntity.status(HttpStatus.OK).body(order);
+    }
+
+    /**
+     * Test API
+     */
+    @RequestMapping(value = "/api/test/{orderID}/{productID}", method = RequestMethod.GET)
+    public ResponseEntity<?> checkOrderDetail(@PathVariable Integer orderID, @PathVariable Integer productID) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("nop");
     }
 }
