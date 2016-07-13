@@ -77,7 +77,7 @@ public class OrdersController {
             if (od.getOrders().getOrderID().equals(orderID) && od.getProduct().getProductID().equals(productID)) {
                 od.setQuantity(od.getQuantity() + orderDetailsSerializer.getQty());
                 orderDetailsRepository.save(od);
-                return ResponseEntity.status(HttpStatus.OK).body(od);
+                return ResponseEntity.status(HttpStatus.CREATED).body(od);
             }
         }
         //end of quick fix
@@ -86,7 +86,7 @@ public class OrdersController {
             order, product, orderDetailsSerializer.getQty(), product.getSellPrice(), product.getBuyPrice()
         );
         orderDetails = orderDetailsRepository.save(orderDetails);
-        return ResponseEntity.status(HttpStatus.OK).body(orderDetails);
+        return ResponseEntity.status(HttpStatus.CREATED).body(orderDetails);
     }
 
     /**
@@ -136,7 +136,7 @@ public class OrdersController {
         order.setOrderDate(new Date());
 
         ordersRepository.save(order);
-        return ResponseEntity.status(HttpStatus.OK).body(order);
+        return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
 
     /**
