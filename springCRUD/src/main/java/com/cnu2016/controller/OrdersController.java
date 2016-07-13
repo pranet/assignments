@@ -38,12 +38,12 @@ public class OrdersController {
         return ResponseEntity.status(HttpStatus.CREATED).body(new OrderSerializer(orders.getOrderID()));
     }
     @RequestMapping(value = "/api/orders/{oid}", method = RequestMethod.GET)
-    public ResponseEntity<?> getOrder(@RequestParam Integer oid){
+    public ResponseEntity<?> getOrder(@PathVariable Integer oid) {
         Orders order = ordersRepository.findOne(oid);
         if (order == null || order.getStatus().equals("Deleted")) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid order id");
         }
-        return ResponseEntity.status(HttpStatus.CREATED).body(new OrderSerializer(order.getOrderID()));
+        return ResponseEntity.status(HttpStatus.OK).body(new OrderSerializer(order.getOrderID()));
     }
     /**
      * Adds to an existing order.
