@@ -136,7 +136,7 @@ public class OrdersController {
         order.setOrderDate(new Date());
 
         ordersRepository.save(order);
-        return ResponseEntity.status(HttpStatus.CREATED).body(order);
+        return ResponseEntity.status(HttpStatus.OK).body(order);
     }
 
     /**
