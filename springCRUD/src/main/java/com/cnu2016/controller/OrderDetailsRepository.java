@@ -10,5 +10,5 @@ import java.util.List;
  * Created by pranet on 09/07/16.
  */
 public interface OrderDetailsRepository extends CrudRepository<OrderDetails, Integer> {
-//    public List<OrderDetails> findByOrder(Orders order);
+    public List<OrderDetails> findByOrders(Orders order);
 }

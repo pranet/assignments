@@ -37,6 +37,14 @@ public class OrdersController {
         orders = ordersRepository.save(orders);
         return ResponseEntity.status(HttpStatus.CREATED).body(new OrderSerializer(orders.getOrderID()));
     }
+    @RequestMapping(value = "/api/orders/{oid}", method = RequestMethod.GET)
+    public ResponseEntity<?> getOrder(@RequestParam Integer oid){
+        Orders order = ordersRepository.findOne(oid);
+        if (order == null || order.getStatus().equals("Deleted")) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid order id");
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).body(new OrderSerializer(order.getOrderID()));
+    }
     /**
      * Adds to an existing order.
      * Will return NOT_FOUND if any of the following is true
@@ -147,11 +155,12 @@ public class OrdersController {
         return ResponseEntity.status(HttpStatus.OK).body(order);
     }
 
-    /**
-     * Test API
-     */
-    @RequestMapping(value = "/api/test/{orderID}/{productID}", method = RequestMethod.GET)
-    public ResponseEntity<?> checkOrderDetail(@PathVariable Integer orderID, @PathVariable Integer productID) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("nop");
-    }
+//    /**
+//     * Test API
+//     */
+//    @RequestMapping(value = "/api/test/{orderID}/{productID}", method = RequestMethod.GET)
+//    public ResponseEntity<?> checkOrderDetail(@PathVariable Integer orderID, @PathVariable Integer productID) {
+//        List<OrderDetails> ret = orderDetailsRepository.findByOrders(ordersRepository.findOne(orderID));
+//        return ResponseEntity.status(HttpStatus.OK).body(ret);
+//    }
 }
