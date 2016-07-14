@@ -1,0 +1,6 @@
+username = ''
+password = ''
+host = ''
+database = 'cnu2016_pverma'
+# region = 'us-east-1'
+# queueName = 'cnu2016_pverma_assignment05'

@@ -1,3 +1,9 @@
+*.idea
+*.Python
+*.iml
+*target
+*.pyc
+*.DS_Store
 springCRUD/target/**
 springCRUD/.idea/**
 src/main/resources/application.properties
