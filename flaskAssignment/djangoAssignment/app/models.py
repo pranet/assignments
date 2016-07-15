@@ -82,7 +82,7 @@ class Product(models.Model):
     buyprice = models.IntegerField(db_column='buyPrice', blank=True, null=True)  # Field name made lowercase.
     sellprice = models.IntegerField(db_column='sellPrice', blank=True, null=True)  # Field name made lowercase.
     productdescription = models.CharField(db_column='productDescription', max_length=1000, blank=True, null=True)  # Field name made lowercase.
-    isavailable = models.IntegerField(db_column='isAvailable', blank=True, null=True)  # Field name made lowercase.
+    isavailable = models.IntegerField(db_column='isAvailable', blank=True, default=True)  # Field name made lowercase.
     categoryid = models.ForeignKey(Category, models.DO_NOTHING, db_column='categoryID', blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
