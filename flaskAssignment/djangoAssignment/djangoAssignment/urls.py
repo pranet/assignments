@@ -21,7 +21,11 @@ from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register(r'api/products', app_views2.ProductViewSet)
+router.register(r'api/orders', app_views2.OrdersViewSet)
+router.register(r'api/orders/(?P<order_id>[0-9]+)/orderlineitem', app_views2.OrderDetailsViewSet, 'Orderdetails')
+# router.register(r'api/orders/(?P<order_id>[0-9]+)/orderlineitem', app_views2.Test112221)
 
+# router.register(r'orders/(?P<order_line_id>[0-9]+)/orderlineitem', views.OrderLViewSet, 'order_line')
 urlpatterns = [
     url(r'^api/products/summary', app_views2.ProductSummaryList.as_view()),
     url(r'^',include(router.urls)),

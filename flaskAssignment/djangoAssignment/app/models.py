@@ -10,19 +10,19 @@ from __future__ import unicode_literals
 from django.db import models
 
 
-class Address(models.Model):
-    addressid = models.AutoField(db_column='addressID', primary_key=True)  # Field name made lowercase.
-    userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
-    addressline1 = models.CharField(db_column='addressLine1', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    addressline2 = models.CharField(db_column='addressLine2', max_length=100, blank=True, null=True)  # Field name made lowercase.
-    city = models.CharField(max_length=100, blank=True, null=True)
-    state = models.CharField(max_length=100, blank=True, null=True)
-    country = models.CharField(max_length=100, blank=True, null=True)
-    postalcode = models.CharField(db_column='postalCode', max_length=100, blank=True, null=True)  # Field name made lowercase.
-
-    class Meta:
-        managed = False
-        db_table = 'Address'
+# class Address(models.Model):
+#     addressid = models.AutoField(db_column='addressID', primary_key=True)  # Field name made lowercase.
+#     userid = models.ForeignKey('Users', models.DO_NOTHING, db_column='userID')  # Field name made lowercase.
+#     addressline1 = models.CharField(db_column='addressLine1', max_length=100, blank=True, null=True)  # Field name made lowercase.
+#     addressline2 = models.CharField(db_column='addressLine2', max_length=100, blank=True, null=True)  # Field name made lowercase.
+#     city = models.CharField(max_length=100, blank=True, null=True)
+#     state = models.CharField(max_length=100, blank=True, null=True)
+#     country = models.CharField(max_length=100, blank=True, null=True)
+#     postalcode = models.CharField(db_column='postalCode', max_length=100, blank=True, null=True)  # Field name made lowercase.
+#
+#     class Meta:
+#         managed = False
+#         db_table = 'Address'
 
 
 class Category(models.Model):
@@ -90,7 +90,7 @@ class Product(models.Model):
         db_table = 'Product'
 
     def __unicode__(self):
-        return self.productname if self.productname != None else ("ID : " + str(self.productid))
+        return self.productname if self.productname is not None else ("ID : " + str(self.productid))
 
 
 class Users(models.Model):
@@ -99,10 +99,14 @@ class Users(models.Model):
     contactfirstname = models.CharField(db_column='contactFirstName', max_length=100, blank=True, null=True)  # Field name made lowercase.
     contactlastname = models.CharField(db_column='contactLastName', max_length=100, blank=True, null=True)  # Field name made lowercase.
     phone = models.CharField(max_length=100, blank=True, null=True)
+    address = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = True
         db_table = 'Users'
+
+    def __unicode__(self):
+        return self.customername if self.customername is not None else ("ID : " + str(self.userid))
 
 
 class AuditLog(models.Model):
