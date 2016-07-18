@@ -64,7 +64,7 @@ public class OrdersController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid data");
         }
         Product product = productRepository.findOne(orderDetailsSerializer.getProduct_id());
-        if (order == null || product == null) {
+        if (product == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid data");
         }
         if (order.getStatus().equals("In Cart") == false) {
