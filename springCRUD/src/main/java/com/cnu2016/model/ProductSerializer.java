@@ -7,20 +7,23 @@ public class ProductSerializer {
     private Integer id;
     private String code;
     private String description;
+    private Integer qty;
 
     public ProductSerializer(Product p) {
         this.id = p.getProductID();
         this.code = p.getProductCode();
         this.description = p.getProductDescription();
+        this.qty = p.getQuantityInStock();
     }
 
     public ProductSerializer() {
     }
 
-    public ProductSerializer(int id, String code, String description) {
+    public ProductSerializer(int id, String code, String description, Integer qty) {
         this.id = id;
         this.code = code;
         this.description = description;
+        this.qty = qty;
     }
 
     public String getDescription() {
@@ -45,5 +48,13 @@ public class ProductSerializer {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getQty() {
+        return qty;
+    }
+
+    public void setQty(Integer qty) {
+        this.qty = qty;
     }
 }

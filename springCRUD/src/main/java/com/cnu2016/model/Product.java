@@ -18,11 +18,12 @@ public class Product {
     private Integer buyPrice;
     private Integer sellPrice;
     private Boolean isAvailable;
-    public Product(int productID, String productCode, String productDescription) {
+    public Product(int productID, String productCode, String productDescription, Integer quantityInStock) {
         this.productID = productID;
         this.productCode = productCode;
         this.productDescription = productDescription;
         this.isAvailable = true;
+        this.quantityInStock = quantityInStock;
     }
 
     public Product(String productName, String productCode, String productDescription, int quantityInStock, int buyPrice, int sellPrice, Boolean isAvailable, int ID) {

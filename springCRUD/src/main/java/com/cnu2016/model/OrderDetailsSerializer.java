@@ -4,31 +4,31 @@ package com.cnu2016.model;
  * Created by pranet on 12/07/16.
  */
 public class OrderDetailsSerializer {
-    private Integer productID;
-    private Integer quantity;
+    private Integer product_id;
+    private Integer qty;
 
-    public OrderDetailsSerializer(Integer productID, Integer quantity) {
-        this.productID = productID;
-        this.quantity = quantity;
+    public OrderDetailsSerializer(Integer product_id, Integer qty) {
+        this.product_id = product_id;
+        this.qty = qty;
     }
 
     public OrderDetailsSerializer() {
 
     }
 
-    public Integer getProductID() {
-        return productID;
+    public Integer getProduct_id() {
+        return product_id;
     }
 
-    public void setProductID(Integer productID) {
-        this.productID = productID;
+    public void setProduct_id(Integer product_id) {
+        this.product_id = product_id;
     }
 
-    public Integer getQuantity() {
-        return quantity;
+    public Integer getQty() {
+        return qty;
     }
 
-    public void setQuantity(Integer quantity) {
-        this.quantity = quantity;
+    public void setQty(Integer qty) {
+        this.qty = qty;
     }
 }

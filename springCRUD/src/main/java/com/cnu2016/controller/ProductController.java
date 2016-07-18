@@ -1,6 +1,8 @@
 
 package com.cnu2016.controller;
 import java.util.*;
+
+import com.amazonaws.Response;
 import com.cnu2016.model.Product;
 import com.cnu2016.model.ProductSerializer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,11 @@ import static java.lang.Boolean.TRUE;
 public class ProductController {
     @Autowired
     public ProductRepository productRepository;
+
+    @RequestMapping(value = "/api/health", method = RequestMethod.GET)
+    public ResponseEntity<?> getHealth() {
+        return ResponseEntity.ok("Healthy");
+    }
 
     @RequestMapping(value = "/api/products", method = RequestMethod.GET)
     public ResponseEntity<?> getAllProducts() {
@@ -41,7 +48,7 @@ public class ProductController {
     /* id is ignored in POST, hence dummy value */
     @RequestMapping(value = "/api/products", method = RequestMethod.POST)
     public ResponseEntity<?> postProduct(@RequestBody ProductSerializer p) {
-        Product product = new Product(-1, p.getCode(), p.getDescription());
+        Product product = new Product(-1, p.getCode(), p.getDescription(), p.getQty());
         return ResponseEntity.status(HttpStatus.CREATED).body(new ProductSerializer(productRepository.save(product)));
     }
 
@@ -51,7 +58,7 @@ public class ProductController {
         if (productRepository.findOne(id) == null || product.getAvailable() == FALSE) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("ID not found");
         }
-        product = productRepository.save(new Product(id, p.getCode(), p.getDescription()));
+        product = productRepository.save(new Product(id, p.getCode(), p.getDescription(), p.getQty()));
         return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
     }
 
@@ -66,6 +73,9 @@ public class ProductController {
         }
         if (p.getDescription() != null) {
             product.setProductDescription(p.getDescription());
+        }
+        if (p.getQty() != null) {
+            product.setQuantityInStock(p.getQty());
         }
         product = productRepository.save(product);
         return ResponseEntity.status(HttpStatus.OK).body(new ProductSerializer(product));
