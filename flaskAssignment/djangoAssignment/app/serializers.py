@@ -14,13 +14,16 @@ class ProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='productid', read_only=True)
     code = serializers.CharField(source='productcode', required=True)
     description = serializers.CharField(source='productdescription', required=True)
+    name = serializers.CharField(source='productname', required=True)
+
     price = serializers.IntegerField(source='buyprice', required=True)
     category_id = serializers.IntegerField(source='categoryid.id', read_only=True)
+
     category = serializers.CharField(max_length=100, required=True, write_only=True)
 
     class Meta:
         model = Product
-        fields = ('id', 'code', 'description', 'price', 'category_id', 'category')
+        fields = ('id', 'code', 'description', 'price', 'category_id', 'category', 'name')
 
     def create(self, validated_data):
         validated_data['categoryid'], created = Category.objects.get_or_create(name=validated_data.get('category'))
@@ -35,6 +38,8 @@ class ProductSerializer(serializers.ModelSerializer):
         instance.productdescription = validated_data.get('description', instance.productdescription if self.partial else None)
         instance.buyprice = validated_data.get('price', instance.buyprice if self.partial else None)
         instance.categoryid = validated_data.get('categoryid', instance.categoryid if self.partial else None)
+        instance.productname = validated_data.get('name', instance.productname if self.partial else None)
+
         instance.save()
         return instance
 

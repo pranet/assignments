@@ -28,7 +28,7 @@ class ProductSummaryList(APIView):
             if category_name is not None:
                 products = products.filter(categoryid__name=category_name)
             if request.GET.get('group_by') == 'category':
-                products = products.annotate(category_id=F('categoryid__id')).values('category_id').annotate(count=Count('productid'))
+                products = products.annotate(category_id=F('categoryid__id'), category_name=F('categoryid__name')).values('category_id', 'category_name').annotate(count=Count('productid'))
             else:
                 products = [{'count' : products.count()}]
             return JsonResponse({'data' : list(products)});
@@ -38,7 +38,7 @@ class ProductViewSet(viewsets.ModelViewSet):
     """ Create, update are handled by ProductSerializer
     Deletions are handled by the isavailable field of Product Model.
     """
-    queryset = Product.objects.filter(isavailable=1)
+    queryset = Product.objects.filter(isavailable=1).prefetch_related('categoryid')
     serializer_class = ProductSerializer
 
     def destroy(self, request, *args, **kwargs):
