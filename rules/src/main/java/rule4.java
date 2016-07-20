@@ -7,8 +7,8 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Rule : findbugs:NP_ALWAYS_NULL_EXCEPTION
- * The object being dereferenced may be null on the exception path
+ * Rule : squid:S1143
+ * Do not have a return statement in fianlly block as it may prevent error from being propagated
  */
 public class rule4 extends Rule {
 
