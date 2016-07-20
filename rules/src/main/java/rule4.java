@@ -13,7 +13,6 @@ import java.util.List;
 public class rule4 extends Rule {
 
     void badExample() {
-        List a = null;
         try {
             throw new RuntimeException();
         }
