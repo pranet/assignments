@@ -49,10 +49,11 @@ public class SimpleTransformer implements ClassFileTransformer {
     }
 
     private void changeMethod(CtBehavior method) throws NotFoundException, CannotCompileException {
-        String temp = method.getLongName();
-        method.insertBefore("{System.out.println(\"Entering " + temp + "\");}");
+        String methodName = method.getLongName();
+        String className = method.getDeclaringClass().getName();
         method.insertBefore("{for (int i=0; i < $args.length; i++) {System.out.println($args[i]);}}");
-        method.insertAfter("{System.out.println(\"Exiting " + temp + "\");}");
-        method.insertAfter("{System.out.println(\"Returning \" + $_);}");
+        method.insertBefore("{System.out.println(\"It belongs to " + className + "\");}");
+        method.insertBefore("{System.out.println(\"Entering " + methodName + "\");}");
+        method.insertAfter("{System.out.println(\"Returning \" + $_ + \" from " + methodName + "\");}");
     }
 }
