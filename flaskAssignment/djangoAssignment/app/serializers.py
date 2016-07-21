@@ -12,11 +12,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
     """
     id = serializers.IntegerField(source='productid', read_only=True)
-    code = serializers.CharField(source='productcode', required=True)
-    description = serializers.CharField(source='productdescription', required=True)
+    code = serializers.CharField(source='productcode', required=False)
+    description = serializers.CharField(source='productdescription', required=False)
     name = serializers.CharField(source='productname', required=False)
 
-    price = serializers.IntegerField(source='buyprice', required=True)
+    price = serializers.IntegerField(source='buyprice', required=False)
     category_id = serializers.IntegerField(source='categoryid.id', read_only=True)
 
     category = serializers.CharField(max_length=100, required=True, write_only=True)
