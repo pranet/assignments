@@ -48,7 +48,7 @@ class OrdersSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='orderid', read_only=True)
     username = serializers.CharField(source='userid.customername', required=False)
     address = serializers.CharField(source='userid.address', required=False)
-
+    # userid = serializers.CharField(source='userid', required=False)
     class Meta:
         model = Orders
         fields = ('id', 'username', 'address', 'status')
@@ -93,14 +93,16 @@ class OrdersSerializer(serializers.ModelSerializer):
             If neither is given, cool
             userid object is created if and only if atleast one of username/address is specified
         """
-        user_id = validated_data.get('userid', None)
+        user_id = validated_data.get('userid', dict())
         username = user_id.get('customername', None)
         address = user_id.get('address', None)
-
-        user = Users.objects.get_or_create(customername=username) if username is not None else None
+        user = None
+        if username is not None:
+            user, created = Users.objects.get_or_create(customername=username)
         if user is not None and address is not None:
             user.address = address
-        user.save()
+        if user is not None:
+            user.save()
         validated_data['userid'] = user
         return Orders.objects.create(**validated_data)
 
