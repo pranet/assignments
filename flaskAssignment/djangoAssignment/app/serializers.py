@@ -14,7 +14,7 @@ class ProductSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(source='productid', read_only=True)
     code = serializers.CharField(source='productcode', required=True)
     description = serializers.CharField(source='productdescription', required=True)
-    name = serializers.CharField(source='productname', required=True)
+    name = serializers.CharField(source='productname', required=False)
 
     price = serializers.IntegerField(source='buyprice', required=True)
     category_id = serializers.IntegerField(source='categoryid.id', read_only=True)
