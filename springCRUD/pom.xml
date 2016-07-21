@@ -56,6 +56,11 @@
             <artifactId>rest-assured</artifactId>
             <version>2.9.0</version>
         </dependency>
+        <dependency>
+            <groupId>javassist</groupId>
+            <artifactId>javassist</artifactId>
+            <version>3.12.1.GA</version>
+        </dependency>
     </dependencies>
 
     <properties>
@@ -84,5 +89,6 @@
             <url>https://repo.spring.io/libs-release</url>
         </pluginRepository>
     </pluginRepositories>
+
 
 </project>
