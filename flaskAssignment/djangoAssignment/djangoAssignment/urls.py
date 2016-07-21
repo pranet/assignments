@@ -30,5 +30,6 @@ urlpatterns = [
     url(r'^api/products/summary', app_views2.ProductSummaryList.as_view()),
     url(r'^',include(router.urls)),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/report/daily-sale$', app_views.get_daily_sales_report)
+    url(r'^api/report/daily-sale', app_views.get_daily_sales_report),
+    url(r'^api/health', app_views2.getHealth)
 ]

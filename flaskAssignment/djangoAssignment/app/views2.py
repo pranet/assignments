@@ -12,12 +12,17 @@ from serializers import OrdersSerializer
 from serializers import OrderDetailsSerializer
 
 
+def getHealth(request):
+    return JsonResponse({})
+
+
 class ProductSummaryList(APIView):
     """ Returns product summary.
     Query parameters :
         code, category_name : Filters
         groupBy = category
     """
+
     def get(self, request):
         if request.method == 'GET':
             code = request.GET.get('code', None)
@@ -28,10 +33,13 @@ class ProductSummaryList(APIView):
             if category_name is not None:
                 products = products.filter(categoryid__name=category_name)
             if request.GET.get('group_by') == 'category':
-                products = products.annotate(category_id=F('categoryid__id'), category_name=F('categoryid__name')).values('category_id', 'category_name').annotate(count=Count('productid'))
+                products = products.annotate(category_id=F('categoryid__id'),
+                                             category_name=F('categoryid__name')).values('category_id',
+                                                                                         'category_name').annotate(
+                    count=Count('productid'))
             else:
-                products = [{'count' : products.count()}]
-            return JsonResponse({'data' : list(products)});
+                products = [{'count': products.count()}]
+            return JsonResponse(list(products));
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -74,8 +82,11 @@ class OrderDetailsViewSet(viewsets.ModelViewSet):
         order = get_object_or_404(Orders, orderid=kwargs['order_id'])
         if order.status == "Deleted":
             return JsonResponse(status=404)
-        product = get_object_or_404(Product, productid=request.data['product_id'], isavailable=False)
-        orderdetails = Orderdetails.objects.create(productid=product, orderid=order, sellprice=request.data['price'])
+        print request.data
+        product = get_object_or_404(Product, productid=request.data['product_id'], isavailable=True)
+        orderdetails = Orderdetails.objects.create(productid=product, orderid=order,
+                                                   sellprice=request.data['price'],
+                                                   quantity=request.data.get('quantity', 0))
         serializer = OrderDetailsSerializer(orderdetails)
         return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
 
@@ -86,6 +97,7 @@ class OrderSummaryList(APIView):
         code, category_name : Filters
         groupBy = category, product
     """
+
     def get(self, request):
         if request.method == 'GET':
             code = request.GET.get('code', None)
@@ -96,7 +108,17 @@ class OrderSummaryList(APIView):
             if category_name is not None:
                 products = products.filter(categoryid__name=category_name)
             if request.GET.get('group_by') == 'category':
-                products = products.annotate(category_id=F('categoryid__id')).values('category_id').annotate(count=Count('productid'))
+                products = products.annotate(category_id=F('categoryid__id')).values('category_id').annotate(
+                    count=Count('productid'))
             else:
-                products = [{'count' : products.count()}]
-            return JsonResponse({'data' : list(products)});
+                products = [{'count': products.count()}]
+            return JsonResponse(list(products))
+
+
+class MiddleWare(object):
+    def process_response(self, request, response):
+        if (response is not None):
+            if (response._container is not None and response._container is not ['']):
+                response._container = ['{"data":' + response._container[0] + '}']
+
+        return response
