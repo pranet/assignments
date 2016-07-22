@@ -1,0 +1,25 @@
+<div class="container">
+	<div class="row">
+		<div class="col-md-3">
+			<p class="lead">Your Store</p>
+			<div class="list-group" ng-repeat="category in categories">
+				<a href="" class="list-group-item" ng-click="setCategoryID(category.category_id)">{{category.category_name}} </a>
+			</div>
+		</div>
+		<div class="col-md-9">
+			<div class="row">
+				<div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="product in products | filter:{category_id:activeCategoryID}:true">
+					<a href="#/products/{{product.id}}">
+							<div class="thumbnail">
+								<img src={{product.url}} alt="" style="height:200px; width:500px">
+								<div class="caption" align="center">
+									<h4>{{product.name}}</h4>
+									<h4>${{product.price}}</h4>
+								</div>
+							</div>
+					</a>
+				</div>
+			</div>
+		</div> 
+	</div>
+</div>
