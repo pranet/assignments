@@ -1,0 +1,46 @@
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+<div class="container">
+    <strong>ORDER SUMMARY</strong>
+    <table id="cart" class="table table-hover table-condensed" ng-init="total = 0">
+        <thead>
+            <tr>
+                <th style="width:50%">Product</th>
+                <th style="width:10%" class="text-right">Price</th>
+                <th style="width:12%" class="text-right">Quantity</th>
+                <th style="width:18%" class="text-right">Subtotal</th>
+                <th style="width:10%"></th>
+            </tr>
+        </thead>
+        <tbody ng-repeat="product in products">
+            <tr>
+                <td data-th="Product">
+                    <div style="height: 10px;">
+                            <p>{{product.name}}</p>
+                        </div>
+                    </div>
+                </td>
+                <td data-th="Price" class="text-right">${{product.price}}</td>
+                <td data-th="Quantity" class="text-right">{{product.quantity}}</td>
+                <td data-th="Subtotal" class="text-right" ng-init="$parent.total = $parent.total + (product.price * product.quantity)">${{product.quantity * product.price}}</td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" class="hidden-xs"></td>
+                <td class="hidden-xs text-right"><strong>Total ${{total}}</strong></td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div>
+        <strong>BILLING ADDRESS</strong>
+        <br>
+        {{username}}
+        <br>
+        {{address}}
+    </div>
+    <div align = "center">
+        <strong>THANK YOU. YOUR ORDER WILL BE DELIVERED SOON.</strong>
+    </div>
+
+</div>

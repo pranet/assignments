@@ -1,0 +1,20 @@
+.modal-body .form-horizontal .col-sm-2,
+.modal-body .form-horizontal .col-sm-10 {
+    width: 100%
+}
+
+.modal-body .form-horizontal .control-label {
+    text-align: left;
+}
+.modal-body .form-horizontal .col-sm-offset-2 {
+    marn-left: 15px;
+}
+.totalShow{
+	margin-right: 170px;
+}
+#form{
+   position:fixed;
+   top:50%;
+   left:50%;
+   width:250px;
+}
