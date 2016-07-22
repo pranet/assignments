@@ -11,7 +11,7 @@
 				<div class="col-sm-4 col-lg-4 col-md-4" ng-repeat="product in products | filter:{category_id:activeCategoryID}:true">
 					<a href="#/products/{{product.id}}">
 							<div class="thumbnail">
-								<img src="http://www.whiskymerchants.co.uk/communities/9/004/005/976/859/images/4548858093.jpg" alt="">
+								<img src={{product.url}} alt="" style="height:200px; width:500px">
 								<div class="caption" align="center">
 									<h4>{{product.name}}</h4>
 									<h4>${{product.price}}</h4>

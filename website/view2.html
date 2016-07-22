@@ -5,7 +5,7 @@
         <div class="col-md-3">
             <p class="lead">Your Store</p>
             <div class="list-group">
-                <a href="#" class="list-group-item">Back</a>
+                <a href="#/" class="list-group-item">Back</a>
             </div>
         </div>
 
@@ -14,7 +14,7 @@
             <div class="thumbnail">
             	<div class = "row">
 	            	<div class="col-md-3">
-	                	<img src="http://www.whiskymerchants.co.uk/communities/9/004/005/976/859/images/4548858093.jpg" alt="">
+	                	<img src={{products.url}} alt="">
 	                </div>
 	                <div class="caption-full col-md-9">
 	                    <h4 class="pull-right">${{products.price}}</h4>
@@ -23,7 +23,12 @@
 	                    <p>{{products.description}}</p>
 	                </div>
             	</div>
-	               <a href="#" class="list-group-item active" align = "center">Add to cart</a>
+            	
+				<div class="form-inline">
+					<!-- To do: placeholder will be current value. user can directly modify this and enter new value instead -->
+					<input type="text" class="form control" placeholder="Quantity" ng-model="qty"/>
+					<button type="submit" class="btn btn-success" ng-click="addToCart(qty)">Add to Cart</button>
+				</div>
             </div>
 
         </div>
