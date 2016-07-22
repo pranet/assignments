@@ -52,7 +52,7 @@ class ProductSerializer(serializers.ModelSerializer):
             instance.productdescription = validated_data.get('productdescription', None)
             instance.buyprice = validated_data.get('buyprice', None)
             instance.categoryid = validated_data.get('categoryid', None)
-
+            assert False
         instance.save()
         return instance
 
