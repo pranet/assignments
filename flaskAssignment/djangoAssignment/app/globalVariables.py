@@ -22,4 +22,5 @@ def init():
     global Q
     conn = boto.sqs.connect_to_region('us-east-1')
     Q = conn.get_queue('cnu2016_pverma_assignment05')
+    
     addMessageToQueue("Q created");

@@ -17,7 +17,7 @@ from globalVariables import addMessageToQueue
 
 def getHealth(request):
     addMessageToQueue("Entering and exiting health API")
-    return JsonResponse({})
+    return JsonResponse({},safe=False)
 
 class ProductSummaryList(APIView):
     """ Returns product summary.
@@ -46,7 +46,7 @@ class ProductSummaryList(APIView):
                 products = [{'count': products.count()}]
             addMessageToQueue("Exiting Product Summary: get")
 
-            return JsonResponse(list(products));
+            return JsonResponse(list(products), safe=False);
 
 
 class ProductViewSet(viewsets.ModelViewSet):
@@ -96,7 +96,7 @@ class OrderDetailsViewSet(viewsets.ModelViewSet):
                                                    sellprice=request.data['price'],
                                                    quantity=request.data.get('quantity', 0))
         serializer = OrderDetailsSerializer(orderdetails)
-        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.data, status=status.HTTP_201_CREATED,safe=False)
 
 
 class OrderSummaryList(APIView):
@@ -120,7 +120,7 @@ class OrderSummaryList(APIView):
                     count=Count('productid'))
             else:
                 products = [{'count': products.count()}]
-            return JsonResponse(list(products))
+            return JsonResponse(list(products),safe=False)
 
 
 class MiddleWare(object):
