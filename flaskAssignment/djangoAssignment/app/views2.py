@@ -1,3 +1,4 @@
+from __future__ import print_function
 from rest_framework import viewsets, status, generics
 from rest_framework.views import APIView
 from django.http import HttpResponse
@@ -10,11 +11,13 @@ from models import Orderdetails
 from serializers import ProductSerializer
 from serializers import OrdersSerializer
 from serializers import OrderDetailsSerializer
+from boto.sqs.message import  Message
+from globalVariables import addMessageToQueue
 
 
 def getHealth(request):
+    addMessageToQueue("Entering and exiting health API")
     return JsonResponse({})
-
 
 class ProductSummaryList(APIView):
     """ Returns product summary.
@@ -24,6 +27,8 @@ class ProductSummaryList(APIView):
     """
 
     def get(self, request):
+        addMessageToQueue("Entering Product Summary: get")
+
         if request.method == 'GET':
             code = request.GET.get('code', None)
             category_name = request.GET.get('category_name', None)
@@ -39,6 +44,8 @@ class ProductSummaryList(APIView):
                     count=Count('productid'))
             else:
                 products = [{'count': products.count()}]
+            addMessageToQueue("Exiting Product Summary: get")
+
             return JsonResponse(list(products));
 
 
@@ -50,9 +57,11 @@ class ProductViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
     def destroy(self, request, *args, **kwargs):
+        addMessageToQueue("Entering Destroying Product");
         instance = self.get_object()
         instance.isavailable = 0
         instance.save()
+        addMessageToQueue("Exiting Destroying Product");
         return HttpResponse(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -82,7 +91,6 @@ class OrderDetailsViewSet(viewsets.ModelViewSet):
         order = get_object_or_404(Orders, orderid=kwargs['order_id'])
         if order.status == "Deleted":
             return JsonResponse(status=404)
-        print request.data
         product = get_object_or_404(Product, productid=request.data['product_id'], isavailable=True)
         orderdetails = Orderdetails.objects.create(productid=product, orderid=order,
                                                    sellprice=request.data['price'],

@@ -4,6 +4,9 @@ from models import Category
 from models import Users
 from models import Orders
 from models import Orderdetails
+from globalVariables import addMessageToQueue
+from boto.sqs.message import Message
+
 
 class ProductSerializer(serializers.ModelSerializer):
     """" category is actually category name
@@ -26,8 +29,10 @@ class ProductSerializer(serializers.ModelSerializer):
         fields = ('id', 'code', 'description', 'price', 'category_id', 'category', 'name')
 
     def create(self, validated_data):
+        addMessageToQueue("Entered ProductSerializer create");
         validated_data['categoryid'], created = Category.objects.get_or_create(name=validated_data.get('category'))
         del validated_data['category']
+        addMessageToQueue("Exiting ProductSerializer create");
         return Product.objects.create(**validated_data)
 
     def update(self, instance, validated_data):
