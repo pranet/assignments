@@ -12,11 +12,11 @@ class ProductSerializer(serializers.ModelSerializer):
 
     """
     id = serializers.IntegerField(source='productid', read_only=True)
-    code = serializers.CharField(source='productcode')
-    description = serializers.CharField(source='productdescription')
-    name = serializers.CharField(source='productname', required= False)
+    code = serializers.CharField(source='productcode', required=False)
+    description = serializers.CharField(source='productdescription', required=False)
+    name = serializers.CharField(source='productname', required=False)
 
-    price = serializers.IntegerField(source='buyprice')
+    price = serializers.IntegerField(source='buyprice', required=False)
     category_id = serializers.IntegerField(source='categoryid.id', read_only=True)
 
     category = serializers.CharField(max_length=100, required=False)
@@ -33,14 +33,25 @@ class ProductSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """self.partial is true if update is called via a patch request.
         It is false for a put request"""
-        if 'category' in validated_data:
+        if 'category' in validated_data.keys():
             validated_data['categoryid'], created = Category.objects.get_or_create(name=validated_data.get('category'))
-        print validated_data
-        instance.productcode = validated_data.get('productcode', instance.productcode if self.partial else None)
-        instance.productdescription = validated_data.get('productdescription', instance.productdescription if self.partial else None)
-        instance.buyprice = validated_data.get('buyprice', instance.buyprice if self.partial else None)
-        instance.categoryid = validated_data.get('categoryid', instance.categoryid if self.partial else None)
-        instance.productname = validated_data.get('productname', instance.productname if self.partial else None)
+        # print validated_data
+        # instance.productcode = validated_data.get('productcode', instance.productcode if self.partial else None)
+        # instance.productdescription = validated_data.get('productdescription', instance.productdescription if self.partial else None)
+        # instance.buyprice = validated_data.get('buyprice', instance.buyprice if self.partial else None)
+        # instance.categoryid = validated_data.get('categoryid', instance.categoryid if self.partial else None)
+        # # instance.productname = validated_data.get('productname', instance.productname if self.partial else None)
+
+        if self.partial:
+            instance.productcode = validated_data.get('productcode', instance.productcode)
+            instance.productdescription = validated_data.get('productdescription', instance.productdescription)
+            instance.buyprice = validated_data.get('buyprice', instance.buyprice)
+            instance.categoryid = validated_data.get('categoryid', instance.categoryid)
+        else:
+            instance.productcode = validated_data.get('productcode', None)
+            instance.productdescription = validated_data.get('productdescription', None)
+            instance.buyprice = validated_data.get('buyprice', None)
+            instance.categoryid = validated_data.get('categoryid', None)
 
         instance.save()
         return instance
