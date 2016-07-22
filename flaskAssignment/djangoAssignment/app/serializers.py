@@ -38,6 +38,7 @@ class ProductSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         """self.partial is true if update is called via a patch request.
         It is false for a put request"""
+        addMessageToQueue("Entering Product update")
         if 'category' in validated_data.keys():
             validated_data['categoryid'], created = Category.objects.get_or_create(name=validated_data.get('category'))
         # print validated_data
@@ -48,17 +49,20 @@ class ProductSerializer(serializers.ModelSerializer):
         # # instance.productname = validated_data.get('productname', instance.productname if self.partial else None)
 
         if self.partial:
+            addMessageToQueue("It is of type patch")
+
             instance.productcode = validated_data.get('productcode', instance.productcode)
             instance.productdescription = validated_data.get('productdescription', instance.productdescription)
             instance.buyprice = validated_data.get('buyprice', instance.buyprice)
             instance.categoryid = validated_data.get('categoryid', instance.categoryid)
         else:
-            assert False
+            addMessageToQueue("It is of type put")
             instance.productcode = validated_data.get('productcode', None)
             instance.productdescription = validated_data.get('productdescription', None)
             instance.buyprice = validated_data.get('buyprice', None)
             instance.categoryid = validated_data.get('categoryid', None)
         instance.save()
+        addMessageToQueue("Product Instance saved ")
         return instance
 
 
