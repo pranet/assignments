@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FindbugsPlugin pluginid="findbugsPlugin"
+                defaultenabled="true"
+                provider="pranet">
+    <Detector class="ThreadRunDetector" reports="THREAD_RUN"/>
+    <Detector class="RunnableRunDetector" reports="RUNNABLE_RUN"/>
+
+    <BugPattern abbrev="pranet" type="THREAD_RUN" category="CORRECTNESS"/>
+    <BugPattern abbrev="pranet" type="RUNNABLE_RUN" category="CORRECTNESS"/>
+
+</FindbugsPlugin>

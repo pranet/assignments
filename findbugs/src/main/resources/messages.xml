@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MessageCollection>
+
+    <BugCode abbrev="pranet">pranet</BugCode>
+
+    <Plugin>
+        <ShortDescription>Custom Findbugs Detectors</ShortDescription>
+        <Details>Provides custom detectors</Details>
+    </Plugin>
+
+    <Detector class="ThreadRunDetector">
+        <Details>
+            Finds invocations of thread run
+        </Details>
+    </Detector>
+
+    <Detector class="RunnableRunDetector">
+        <Details>
+            Finds instances of runnable run
+        </Details>
+    </Detector>
+
+    <BugPattern type="THREAD_RUN">
+        <ShortDescription>Did you intend to use Thread.start() to create a new execution thread?</ShortDescription>
+        <LongDescription>Did you intend to use Thread.start() to create a new execution thread?</LongDescription>
+        <Details>
+            <![CDATA[ <p>Did you intend to use Thread.start() to create a new execution thread?</p> ]]>
+        </Details>
+    </BugPattern>
+
+    <BugPattern type="RUNNABLE_RUN">
+        <ShortDescription>Did you intend to put run() method in new thread?</ShortDescription>
+        <LongDescription>Did you intend to put run() method in new thread?</LongDescription>
+        <Details>
+            <![CDATA[ <p>Did you intend to put run() method in new thread?</p> ]]>
+        </Details>
+    </BugPattern>
+</MessageCollection>
