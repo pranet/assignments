@@ -1,0 +1,2 @@
+import globalVariables
+globalVariables.init()

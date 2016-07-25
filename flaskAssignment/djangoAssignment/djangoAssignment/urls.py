@@ -14,10 +14,22 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from app import views as app_views
-from django.conf.urls import url
+from app import views2 as app_views2
+from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework.routers import DefaultRouter
 
+router = DefaultRouter()
+router.register(r'api/products', app_views2.ProductViewSet)
+router.register(r'api/orders', app_views2.OrdersViewSet)
+router.register(r'api/orders/(?P<order_id>[0-9]+)/orderlineitem', app_views2.OrderDetailsViewSet, 'Orderdetails')
+# router.register(r'api/orders/(?P<order_id>[0-9]+)/orderlineitem', app_views2.Test112221)
+
+# router.register(r'orders/(?P<order_line_id>[0-9]+)/orderlineitem', views.OrderLViewSet, 'order_line')
 urlpatterns = [
+    url(r'^api/products/summary', app_views2.ProductSummaryList.as_view()),
+    url(r'^',include(router.urls)),
     url(r'^admin/', admin.site.urls),
-    url(r'^api/report/daily-sale$', app_views.get_daily_sales_report)
+    url(r'^api/report/daily-sale', app_views.get_daily_sales_report),
+    url(r'^api/health', app_views2.getHealth)
 ]
